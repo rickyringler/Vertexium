@@ -37,7 +37,6 @@ Viewport: Where the rendered images will appear. The magical space where the sce
 
 
 
-
 #include <windows.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>

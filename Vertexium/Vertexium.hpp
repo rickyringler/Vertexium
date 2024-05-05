@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VERTEXIUM_HPP
+#define VERTEXIUM_HPP
 
 #include <Windows.h>
 #include <Windowsx.h>
@@ -38,6 +39,19 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 class D3D
 {
+	private:
+
+		float m_window_y = 300.0f;
+		float m_window_x = 300.0f;
+		float m_window_width = 800.0f;
+		float m_window_height = 800.0f;
+
+		float m_viewport_y = 0.0f;
+		float m_viewport_x = 0.0f;
+		float m_viewport_width = 800.0f;
+		float m_viewport_height = 800.0f;
+		float m_viewport_background[4] = { 0.0f,0.0f,0.0f,1.0 };
+
 	public:
 
 		float viewport_width = 800.0f;
@@ -62,9 +76,15 @@ class D3D
 
 		friend VERTEX;
 
+		D3D() {};
+		~D3D() {};
+		
 		void InitD3D(HWND hWnd);
 		void CompileShaders(void);
 		void CreateBuffers(const VERTEX* myVer);
 		void ReleaseD3D(IDXGISwapChain* sc, ID3D11Device* dev, ID3D11DeviceContext* con, ID3D11Texture2D* bb, ID3D11VertexShader* vs, ID3D11PixelShader* ps);
 		void RenderFrame(void);
+		void DebugMemoryAddressesAndCompilation(void);
 };
+
+#endif

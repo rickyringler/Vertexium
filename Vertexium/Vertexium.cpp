@@ -136,6 +136,19 @@ void D3D::RenderFrame(void)
 
 	swapChain->Present(0, 0);
 }
+
+void D3D::DebugMemoryAddressesAndCompilation(void)
+{
+	std::ofstream outputFile("output.txt");
+	outputFile << "Vertex Shader Blob: " << vertexShader << std::endl;
+	outputFile << "Compiled Vertex Shader: " << p_VertexShader << std::endl;
+	outputFile << "Pixel Shader Blob: " << pixelShader << std::endl;
+	outputFile << "Compiled Pixel Shader: " << p_PixelShader << std::endl;
+	outputFile << "Vertex Buffer: " << p_VertexBuffer << std::endl;
+	outputFile << "\n BREAK \n BREAK \n BREAK" << std::endl;
+	outputFile.close();
+}
+
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)

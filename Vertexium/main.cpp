@@ -41,27 +41,14 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
                                             NULL,
                                             hInstance,
                                             NULL
-                );
+    );
 
     ShowWindow(hWnd, nCmdShow);
+
     D3D* myD3D = new D3D;
-    myD3D->InitD3D(hWnd);
-    myD3D->CompileShaders();
-    myD3D->CreateBuffers(VERTICES);
-
-                                                                //Mem address to .txt in order of instantiation
-                                            std::ofstream outputFile("output.txt");
-                                            outputFile << "Vertex Shader Blob: " << myD3D->vertexShader << std::endl;
-                                            outputFile << "Compiled Vertex Shader: " << myD3D->p_VertexShader << std::endl;
-                                            outputFile << "Pixel Shader Blob: " << myD3D->pixelShader << std::endl;
-                                            outputFile << "Compiled Pixel Shader: " << myD3D->p_PixelShader << std::endl;
-                                            outputFile << "Vertex Buffer: " << myD3D->p_VertexBuffer << std::endl;
-                                            outputFile << "\n BREAK \n BREAK \n BREAK" << std::endl;
-                                            outputFile.close();
-
+    myD3D->InitD3D(hWnd);myD3D->CompileShaders();myD3D->CreateBuffers(VERTICES);myD3D->DebugMemoryAddressesAndCompilation();
 
     MSG message;
-    std::ofstream coordFile("coord_test.txt", std::ios::app);
     while(1)
     {
         if(PeekMessage(&message, NULL,0,0,PM_REMOVE))
@@ -75,13 +62,6 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
         else
         {
             myD3D->RenderFrame();
-            std::ofstream coordFile("coord_test.txt");
-            coordFile << "Viewport Width: " << myD3D->viewport.Width << ", Height: " << myD3D->viewport.Height << std::endl;
-            for (int i = 0; i < 3; ++i)
-            {
-                coordFile << "Vertex " << i << " - X: " << VERTICES[i].x << ", Y: " << VERTICES[i].y << std::endl;
-            }
-
         }
     }
 

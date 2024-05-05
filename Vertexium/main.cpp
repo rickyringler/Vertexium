@@ -65,6 +65,6 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
         }
     }
 
-    myD3D->ReleaseD3D(myD3D->swapChain, myD3D->device, myD3D->context, myD3D->pBackBuffer, myD3D->p_VertexShader, myD3D->p_PixelShader);
+    myD3D->ReleaseD3D(myD3D->swapChain, myD3D->device, myD3D->context, myD3D->p_BackBuffer, myD3D->p_VertexShader, myD3D->p_PixelShader);
     return message.wParam;
 }

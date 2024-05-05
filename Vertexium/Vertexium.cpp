@@ -32,11 +32,6 @@ void D3D::CompileShaders(void)
 	HRESULT hrVertexShader = D3DCompileFromFile(L"shaders.shader", 0, 0, "VShader", "vs_4_0", 0, 0, &vertexShader, 0);
 	HRESULT hrPixelShader = D3DCompileFromFile(L"shaders.shader", 0, 0, "PShader", "ps_4_0", 0, 0, &pixelShader, 0);
 
-	std::ofstream outputFile("shader_compilation_test.txt");
-	outputFile << "Vertex Shader Compilation Result: " << hrVertexShader << std::endl;
-	outputFile << "Pixel Shader Compilation Result: " << hrPixelShader << std::endl;
-	outputFile.close();
-
 	device->CreateVertexShader(vertexShader->GetBufferPointer(), vertexShader->GetBufferSize(), NULL, &p_VertexShader);
 	device->CreatePixelShader(pixelShader->GetBufferPointer(), pixelShader->GetBufferSize(), NULL, &p_PixelShader);
 
@@ -94,10 +89,9 @@ void D3D::InitD3D(HWND hWnd)
 		&context
 	);
 
-
-	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-	device->CreateRenderTargetView(pBackBuffer, NULL, &backBuffer);
-	pBackBuffer->Release();
+	swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&p_BackBuffer);
+	device->CreateRenderTargetView(p_BackBuffer, NULL, &backBuffer);
+	p_BackBuffer->Release();
 	context->OMSetRenderTargets(1, &backBuffer, NULL);
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
@@ -109,31 +103,28 @@ void D3D::ReleaseD3D(IDXGISwapChain* sc, ID3D11Device* dev, ID3D11DeviceContext*
 {
 	void* toRelease[] = { sc, dev, con, bb, vs, ps };
 
-	for(void* ptr : toRelease)
-	{
-		if(ptr)
-		{
-			reinterpret_cast<IUnknown*>(ptr)->Release();
-		}
-	}
+	//iterates each struct and releases if <> nullptr
+	//if client terminates the program, the CPU/GPU mem allocations may be prematurely released before safely released by the program 
+	for (void* aPointer : toRelease) { if (aPointer) { reinterpret_cast<IUnknown*>(aPointer)->Release(); } }
+
 }
 void D3D::RenderFrame(void)
 {
-	context->ClearRenderTargetView(backBuffer, viewport_background);
-	
+
 	UINT stride = sizeof(VERTEX);
 	UINT offset = 0;
+
+	context->ClearRenderTargetView(backBuffer, viewport_background);
+	
 	context->IASetVertexBuffers(0, 1, &p_VertexBuffer, &stride, &offset);
 	context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	context->VSSetShader(p_VertexShader, nullptr, 0);
-
 	context->PSSetShader(p_PixelShader, nullptr, 0);
 
 	context->IASetInputLayout(layout);
 
 	context->Draw(300,0);
-
 	swapChain->Present(0, 0);
 }
 

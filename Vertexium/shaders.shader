@@ -8,7 +8,7 @@ VOut VShader(float4 position : POSITION, float4 color : COLOR)
 {
     VOut output;
 
-    output.position = float4(position.x + 0.1f, position.y + 0.1f, position.z, 1.0f);
+    output.position = float4(position.x, position.y, position.z, 1.0f);
     output.color = color;
 
     return output;

@@ -1,11 +1,14 @@
 #include "Vertexium.hpp"
 
-const VERTEX VERTICES[3] =
+const VERTEX VERTICES[6] =
 {
-    { 0.0f,  0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},   
-    {-0.5f, -0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},   
+    { 0.0f,  0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},
+    {-0.5f, -0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},
     { 0.5f, -0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},
 
+    { 0.5f,  0.5f, 0.0f, { 0.0f, 1.0f, 0.0f, 1.0f }},
+    { 1.0f, -0.5f, 0.0f, { 0.0f, 1.0f, 0.0f, 1.0f }},
+    { 0.0f, -0.5f, 0.0f, { 0.0f, 1.0f, 0.0f, 1.0f }},
 };
 
                                                            //forward decs
@@ -13,6 +16,8 @@ const VERTEX VERTICES[3] =
 
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
 {
+
+
     ZeroMemory(&wc, sizeof(WNDCLASSEX));
 
                                             wc.cbSize = sizeof(WNDCLASSEX);
@@ -20,6 +25,9 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
                                             wc.lpfnWndProc = WinProc;
                                             wc.hInstance = hInstance;
                                             wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+                                            wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
+                                            wc.hIcon = LoadIcon(0, IDI_APPLICATION);
+                                            wc.hIconSm = LoadIcon(0, IDI_APPLICATION);
                                             wc.lpszClassName = L"WindowClass";
 
     RegisterClassEx(&wc);
@@ -46,7 +54,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
     ShowWindow(hWnd, nCmdShow);
 
     D3D* myD3D = new D3D;
-    myD3D->InitD3D(hWnd);myD3D->CompileShaders();myD3D->CreateBuffers(VERTICES);myD3D->DebugMemoryAddressesAndCompilation();
+    int myVerxToRender = 6;
+    myD3D->InitD3D(hWnd);myD3D->CompileShaders();myD3D->CreateBuffers(VERTICES, myVerxToRender);myD3D->DebugMemoryAddressesAndCompilation();
 
     MSG message;
     while(1)
@@ -58,6 +67,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
 
             if (message.message == WM_QUIT)
                 break;
+
         }
         else
         {

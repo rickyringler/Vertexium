@@ -9,13 +9,13 @@ void MESH::rotate(float x, float y, float z)
 	return;
 }
 
-void D3D::CreateBuffers(const VERTEX* myVer)
+void D3D::CreateBuffers(const VERTEX* myVer, int numVerx)
 {
 
 	D3D11_BUFFER_DESC bufferDesc;
 	RtlZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	bufferDesc.ByteWidth = sizeof(VERTEX) * 3;
+	bufferDesc.ByteWidth = sizeof(VERTEX) * numVerx;
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
@@ -24,7 +24,7 @@ void D3D::CreateBuffers(const VERTEX* myVer)
 	D3D11_MAPPED_SUBRESOURCE mappedSR;
 	RtlZeroMemory(&mappedSR, sizeof(D3D11_MAPPED_SUBRESOURCE));
 	context->Map(p_VertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &mappedSR);
-	memcpy_s(mappedSR.pData, sizeof(VERTEX) * 3, myVer, sizeof(VERTEX) * 3);
+	memcpy_s(mappedSR.pData, sizeof(VERTEX) * numVerx, myVer, sizeof(VERTEX) * numVerx);
 	context->Unmap(p_VertexBuffer, NULL);
 }
 void D3D::CompileShaders(void)
@@ -117,7 +117,7 @@ void D3D::RenderFrame(void)
 	context->ClearRenderTargetView(backBuffer, viewport_background);
 	
 	context->IASetVertexBuffers(0, 1, &p_VertexBuffer, &stride, &offset);
-	context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	context->VSSetShader(p_VertexShader, nullptr, 0);
 	context->PSSetShader(p_PixelShader, nullptr, 0);
@@ -127,7 +127,6 @@ void D3D::RenderFrame(void)
 	context->Draw(300,0);
 	swapChain->Present(0, 0);
 }
-
 void D3D::DebugMemoryAddressesAndCompilation(void)
 {
 	std::ofstream outputFile("output.txt");
@@ -148,7 +147,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		PostQuitMessage(0);
 		return 0;
-	} break;
+	}	break;
 	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);

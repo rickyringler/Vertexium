@@ -1,18 +1,18 @@
 #include "Vertexium.hpp"
 
-const VERTEX VERTICES[6] =
+VERTEX VERTICES[6] =
 {
     { 0.0f,  0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},
-    {-0.5f, -0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},
-    { 0.5f, -0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},
+    { 0.5f,  0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},
+    { 0.0f, -0.5f, 0.0f, { 0.0f, 0.0f, 1.0f, 1.0f }},
 
     { 0.5f,  0.5f, 0.0f, { 0.0f, 1.0f, 0.0f, 1.0f }},
     { 1.0f, -0.5f, 0.0f, { 0.0f, 1.0f, 0.0f, 1.0f }},
     { 0.0f, -0.5f, 0.0f, { 0.0f, 1.0f, 0.0f, 1.0f }},
 };
 
-                                                           //forward decs
                                             HWND hWnd; WNDCLASSEX wc; class D3D;
+                                            int myVerxToRender = 6;
 
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
 {
@@ -54,8 +54,11 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,i
     ShowWindow(hWnd, nCmdShow);
 
     D3D* myD3D = new D3D;
-    int myVerxToRender = 6;
-    myD3D->InitD3D(hWnd);myD3D->CompileShaders();myD3D->CreateBuffers(VERTICES, myVerxToRender);myD3D->DebugMemoryAddressesAndCompilation();
+
+    myD3D->InitD3D(hWnd);
+    myD3D->CompileShaders();
+    myD3D->CreateBuffers(VERTICES, myVerxToRender);
+    myD3D->DebugMemoryAddressesAndCompilation();
 
     MSG message;
     while(1)

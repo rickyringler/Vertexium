@@ -9,8 +9,8 @@ VOut VShader(float4 position : POSITION, float4 color : COLOR)
     VOut output;
 
     output.position = float4(position.x, position.y, position.z, 1.0f);
-    output.color = color;
-
+    output.color = color * sin(position.x * 0.5f);
+    
     return output;
 }
 
